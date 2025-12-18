@@ -3,7 +3,7 @@
   "displayName": "Intent Navigator",
   "description": "A sovereignty-first tool to help builders reconnect with their intent and reduce false starts",
   "version": "1.0.0",
-  "publisher": "intent-navigator",
+  "publisher": "Joncik91",
   "engines": {
     "vscode": "^1.75.0"
   },
