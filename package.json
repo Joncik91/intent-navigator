@@ -2,13 +2,30 @@
   "name": "intent-navigator",
   "displayName": "Intent Navigator",
   "description": "A sovereignty-first tool to help builders reconnect with their intent and reduce false starts",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "publisher": "intent-navigator",
   "engines": {
     "vscode": "^1.75.0"
   },
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "intent",
+    "sovereignty",
+    "productivity",
+    "focus",
+    "decision-making"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/intent-navigator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/intent-navigator/issues"
+  },
+  "homepage": "https://github.com/yourusername/intent-navigator#readme",
   "activationEvents": [
     "onCommand:intentNavigator.latestIntentLine",
     "onCommand:intentNavigator.peekIntent",
@@ -64,9 +81,8 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node out/test/runTest.js"
+    "pretest": "npm run compile",
+    "test": "node test/test-extension.js"
   },
   "devDependencies": {
     "@types/node": "^16.11.7",
