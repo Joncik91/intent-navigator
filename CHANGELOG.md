@@ -16,6 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - 
 
+## [1.1.1] - 2025-12-18
+
+### Changed
+- Updated extension icon with custom Gemini-generated design
+- Improved icon processing to prevent distortion
+
 ## [1.1.0] - 2025-12-18
 
 ### Added

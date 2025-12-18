@@ -48,12 +48,13 @@
    git merge release/v1.2.0
    ```
 
-## Current Release: v1.1.0 (Latest)
+## Current Release: v1.1.1 (Latest)
 
-Intent Evolution features are live:
+Intent Evolution features are live with updated custom icon:
 - ✅ Ctrl+Shift+E: Evolve intent with pivot options
 - ✅ Ctrl+Shift+D: Declare ship target
 - ✅ Enhanced Control Index: Counts all intentional acts
+- ✅ Custom Gemini-generated icon
 
 ### Next Release: v1.2.0 (Unreleased)
 
