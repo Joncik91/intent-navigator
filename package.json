@@ -2,7 +2,7 @@
   "name": "intent-navigator",
   "displayName": "Intent Navigator",
   "description": "A sovereignty-first tool to help builders reconnect with their intent and reduce false starts",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "Joncik91",
   "engines": {
     "vscode": "^1.75.0"
@@ -30,6 +30,8 @@
     "onCommand:intentNavigator.latestIntentLine",
     "onCommand:intentNavigator.peekIntent",
     "onCommand:intentNavigator.archiveWithReason",
+    "onCommand:intentNavigator.evolveIntent",
+    "onCommand:intentNavigator.declareIntent",
     "workspaceContains:README.md"
   ],
   "main": "./out/extension.js",
@@ -48,6 +50,16 @@
       {
         "command": "intentNavigator.archiveWithReason",
         "title": "Archive with Reason",
+        "category": "Intent Navigator"
+      },
+      {
+        "command": "intentNavigator.evolveIntent",
+        "title": "Evolve Intent",
+        "category": "Intent Navigator"
+      },
+      {
+        "command": "intentNavigator.declareIntent",
+        "title": "Declare Intent",
         "category": "Intent Navigator"
       },
       {
@@ -74,6 +86,18 @@
         "key": "ctrl+shift+a",
         "mac": "cmd+shift+a",
         "when": "editorTextFocus && resourceLangId == markdown"
+      },
+      {
+        "command": "intentNavigator.evolveIntent",
+        "key": "ctrl+shift+e",
+        "mac": "cmd+shift+e",
+        "when": "editorTextFocus && resourceLangId == markdown"
+      },
+      {
+        "command": "intentNavigator.declareIntent",
+        "key": "ctrl+shift+d",
+        "mac": "cmd+shift+d",
+        "when": "editorTextFocus && resourceLangId == markdown"
       }
     ]
   },
@@ -82,13 +106,15 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile",
-    "test": "node test/test-extension.js"
+    "test": "node test/test-extension.js",
+    "package": "npx @vscode/vsce package"
   },
   "devDependencies": {
     "@types/node": "^16.11.7",
     "@types/vscode": "^1.75.0",
     "@typescript-eslint/eslint-plugin": "^5.59.7",
     "@typescript-eslint/parser": "^5.59.7",
+    "@vscode/vsce": "^2.22.0",
     "eslint": "^8.41.0",
     "typescript": "^4.9.5"
   }

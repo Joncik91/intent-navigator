@@ -13,6 +13,8 @@ interface IntentLogEntry {
     line?: number;
     reason?: string;
     repo?: string;
+    commit?: string;
+    insight?: string;
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -22,12 +24,16 @@ export function activate(context: vscode.ExtensionContext) {
     let latestIntentLineDisposable = vscode.commands.registerCommand('intentNavigator.latestIntentLine', latestIntentLine);
     let peekIntentDisposable = vscode.commands.registerCommand('intentNavigator.peekIntent', peekIntent);
     let archiveWithReasonDisposable = vscode.commands.registerCommand('intentNavigator.archiveWithReason', archiveWithReason);
+    let evolveIntentDisposable = vscode.commands.registerCommand('intentNavigator.evolveIntent', evolveIntent);
+    let declareIntentDisposable = vscode.commands.registerCommand('intentNavigator.declareIntent', declareIntent);
     let showControlIndexDisposable = vscode.commands.registerCommand('intentNavigator.showControlIndex', showControlIndex);
 
     // Add to context subscriptions
     context.subscriptions.push(latestIntentLineDisposable);
     context.subscriptions.push(peekIntentDisposable);
     context.subscriptions.push(archiveWithReasonDisposable);
+    context.subscriptions.push(evolveIntentDisposable);
+    context.subscriptions.push(declareIntentDisposable);
     context.subscriptions.push(showControlIndexDisposable);
 
     // Show welcome message on first activation
@@ -140,6 +146,76 @@ async function archiveWithReason() {
     }
 }
 
+// Feature 4: Evolve Intent (Ctrl+Shift+E)
+async function evolveIntent() {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+        vscode.window.showWarningMessage('No active editor found.');
+        return;
+    }
+
+    const document = editor.document;
+    if (document.languageId !== 'markdown') {
+        vscode.window.showWarningMessage('This command works best with Markdown files (README.md).');
+    }
+
+    // Show quick pick menu for evolve options
+    const options = [
+        { label: '🎯 Narrow focus', description: 'From "[current scope]" → "[smaller scope]"', reason: 'narrow_focus' },
+        { label: '🔄 Shift audience', description: 'For "[current user]" → "[new user]"', reason: 'shift_audience' },
+        { label: '💡 New insight', description: 'Realized: it\'s not about X — it\'s about Y.', reason: 'new_insight' }
+    ];
+
+    const selected = await vscode.window.showQuickPick(options, {
+        placeHolder: 'How are you evolving this intent?'
+    });
+
+    if (selected) {
+        // Prompt for editable insight
+        const insight = await vscode.window.showInputBox({
+            prompt: 'Describe your insight',
+            placeHolder: selected.description,
+            value: selected.description
+        });
+
+        if (insight !== undefined) { // Allow empty string
+            // Log the action with reason and insight
+            logIntentAction('E', document.fileName, selected.reason, undefined, insight);
+            
+            // Show confirmation
+            vscode.window.showInformationMessage(`Intent evolved: ${selected.label}`);
+        }
+    }
+}
+
+// Feature 5: Declare Intent (Ctrl+Shift+D)
+async function declareIntent() {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+        vscode.window.showWarningMessage('No active editor found.');
+        return;
+    }
+
+    const document = editor.document;
+    if (document.languageId !== 'markdown') {
+        vscode.window.showWarningMessage('This command works best with Markdown files (README.md).');
+    }
+
+    // Prompt for optional commit tag
+    const commit = await vscode.window.showInputBox({
+        prompt: 'Optional commit tag (e.g., v1-minimal)',
+        placeHolder: 'v1-minimal'
+    });
+
+    if (commit !== undefined) { // Allow empty string
+        // Log the action with commit
+        logIntentAction('D', document.fileName, undefined, commit);
+        
+        // Show confirmation
+        vscode.window.showInformationMessage(`Intent declared: 🚀 "I'm shipping this."`);
+    }
+}
+
 // Show Control Index
 async function showControlIndex() {
     try {
@@ -152,7 +228,14 @@ async function showControlIndex() {
 
         const logContent = fs.readFileSync(logFilePath, 'utf-8');
         const logLines = logContent.trim().split('\n');
-        const intentActions = logLines.length;
+        const intentActions = logLines.filter(line => {
+            try {
+                const entry = JSON.parse(line);
+                return ['L', 'P', 'A', 'E', 'D'].includes(entry.action);
+            } catch {
+                return false;
+            }
+        }).length;
 
         // For demo purposes, we'll use a fixed total actions value
         // In a real implementation, you'd track total keyboard actions
@@ -168,7 +251,7 @@ async function showControlIndex() {
 }
 
 // Log intent actions to .intent.log file
-function logIntentAction(action: string, file?: string, reason?: string) {
+function logIntentAction(action: string, file?: string, reason?: string, commit?: string, insight?: string) {
     try {
         if (!vscode.workspace.workspaceFolders || !vscode.workspace.workspaceFolders.length) {
             return;
@@ -185,6 +268,14 @@ function logIntentAction(action: string, file?: string, reason?: string) {
 
         if (reason) {
             entry.reason = reason;
+        }
+
+        if (commit) {
+            entry.commit = commit;
+        }
+
+        if (insight) {
+            entry.insight = insight;
         }
 
         // Extract repo name from workspace path

@@ -8,7 +8,7 @@ You've `git init`'d, wired auth, and now feel hollow. Why am I building this? Th
 
 ## How It Works
 
-Three keyboard shortcuts, no friction:
+Five keyboard shortcuts, no friction:
 
 - **Ctrl+Shift+L**: Jumps to the latest unquoted line in your README — your raw intent, not the polished pitch. If you wrote `> "This will be huge"` but later added `Actually solving my standup note problem`, it finds the latter.
 
@@ -16,20 +16,35 @@ Three keyboard shortcuts, no friction:
 
 - **Ctrl+Shift+A**: Archive with one tap. Choose from three reasons (wrong problem, too big, no skill fit), logged only to `.intent.log` — a local file you can delete anytime.
 
+- **Ctrl+Shift+E**: Evolve your intent. Choose how you're pivoting (narrow focus, shift audience, new insight) and describe your insight. Sovereignty isn't about sticking to a plan — it's about commanding your own evolution.
+
+- **Ctrl+Shift+D**: Declare your ship target. Mark when you're ready to ship with an optional commit tag.
+
 ## Why It's Local-Only
 
 No cloud sync. No login. No telemetry. Sovereignty can't be outsourced. Your intent log stays in your workspace as `.intent.log`, plain JSONL. You own it. You can delete it. No one else sees it.
 
 ## Metrics That Matter
 
-**Control Index** = (L+P+A actions) / total actions. We calculate it but don't show it by default. It's for you, not the platform. Run `Intent: Show Control Index` from the command palette if you want to see your sovereignty score.
+**Control Index** = (L+P+A+E+D actions) / total actions. We calculate it but don't show it by default. It's for you, not the platform. Run `Intent: Show Control Index` from the command palette if you want to see your sovereignty score.
 
-## Try It Now
+### 🧭 Try It Now (60-Second Workflow)
 
-1. Open an abandoned repo in VS Code
-2. Press Ctrl+Shift+L
-3. See your original intent, unfiltered
-4. Decide: continue, pivot, or archive
+Open an abandoned repo. Press `Ctrl+Shift+L`. If the top unquoted line in your README still gives you energy — you're on track. If not… press `Ctrl+Shift+E` and narrow it.
+
+> *"Actually solving my standup note problem — the emails are always late and nobody reads them."*
+
+You chose to evolve — the tool just made it frictionless.
+
+<details>
+<summary>See what gets logged to .intent.log</summary>
+
+```json
+{"ts":1734567890000,"action":"L","file":"README.md","repo":"your-repo"}
+{"ts":1734567900000,"action":"E","reason":"narrow_focus","insight":"From \"comprehensive dashboard\" → \"automated standup email\"","file":"README.md","repo":"your-repo"}
+```
+
+</details>
 
 ## Installation
 
