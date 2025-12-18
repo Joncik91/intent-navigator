@@ -22,4 +22,5 @@ Thumbs.db
 .intent.log
 
 # Old Releases
-intent-navigator-*.vsix
+intent-navigator-1.0.0.vsix
+intent-navigator-1.1.0.vsix
